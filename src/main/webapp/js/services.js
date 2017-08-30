@@ -52,7 +52,6 @@ app.controller('ServicesController',['$scope','$http', '$templateCache', functio
 	
 	$scope.searchUser = function() {
 		$scope.users = [];
-		$scope.users.length = 0;
 	$http({method: $scope.method, url: $scope.url + '/' + $scope.searchedMsisdn}).
 	then(function(response){
 	$scope.status = response.status;
@@ -75,17 +74,21 @@ app.controller('ServicesController',['$scope','$http', '$templateCache', functio
 			$scope.users.splice(index,1);
 		}, function(response){
 	          $scope.status = response.status;
+				$scope.users.splice(index,1);
+
 		});
 	};
 	
 	$scope.delMethod = 'DELETE';
-	$scope.removeUser = function(userX) {
+	$scope.removeUserX = function(userX) {
 		$http({method: $scope.delMethod, url: $scope.url + '/delete/' + $scope.userX['msisdn']}).
 		then(function(response){
 	          $scope.status = response.status;
-			$scope.userX = [];
 		}, function(response){
 	          $scope.status = response.status;
+				$scope.found = false;
+				$scope.userX = [];
+
 		});
 	};
 }]);

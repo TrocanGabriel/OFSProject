@@ -54,7 +54,7 @@ public class CustomerResource {
 		}
 	}
 	if(foundCustomer == null){
-		System.out.println("ERROR: MSISDN not found in Redis or DB");
+		System.out.println("ERROR: MSISDN not found in Redis or DB :" + searchedMsisdn);
 	}
 		return foundCustomer;
 		}

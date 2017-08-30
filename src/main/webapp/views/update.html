@@ -6,7 +6,7 @@
       <button ng-init="formUpdate=false" ng-click="formUpdate=!formUpdate">Update existing user</button>
 
   <form ng-submit="addUser()" ng-show="formAdd">
-        <input type="number" placeholder="msisdn" ng-model="fields.msisdn">
+        <input type="text" placeholder="msisdn" ng-model="fields.msisdn">
         <input type="text" placeholder="groupProfile" ng-model="fields.groupProfile">        
         <input type="text" placeholder="startDate" ng-model="fields.startDate">
         <input type="text" placeholder="endDate" ng-model="fields.endDate">
@@ -15,7 +15,7 @@
       </form>
       
   <form ng-submit="updateUser()" ng-show="formUpdate">
-        <input type="number" placeholder="msisdn" ng-model="updatedMsisdn">
+        <input type="text" placeholder="msisdn" ng-model="updatedMsisdn">
         <input type="text" placeholder="field" ng-model="updatedField">
         <input type="text" placeholder="value" ng-model="updatedValue">
         

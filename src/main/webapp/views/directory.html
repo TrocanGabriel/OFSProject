@@ -3,7 +3,7 @@
 <br>
 <br>
       <form name="SearchForm" ng-submit="searchUser()" novalidate>
-      <input type="number" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
+      <input type="text" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
         <input type="submit" value="Send" ng-disabled="SearchForm.$invalid"/>
       </form>
       
@@ -21,7 +21,7 @@
   	<h3>{{userX.msisdn}}</h3>  
   	  {{userX.groupProfile + ': ' + userX.startDate + ' - ' + userX.endDate}}
 
-    	  <div class="remove" ng-click= "removeUser(userX)">Remove</div>
+    	  <div class="remove" ng-click= "removeUserX(userX)">Remove</div>
   
   </div>
    </div>

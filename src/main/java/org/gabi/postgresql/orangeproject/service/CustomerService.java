@@ -212,8 +212,8 @@ public class CustomerService {
 
 	    	  stmt= c.prepareStatement(sql);
 	    	  stmt.setString(2, msisdn);
-	    	  DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
 	    	  if(column.equals("START_DATE") || column.equals("END_DATE")){
+		    	  DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
 	    		  Date newDate = format.parse(value);
 	    		  stmt.setDate(1,(java.sql.Date) newDate);
 	    		 

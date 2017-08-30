@@ -245,4 +245,34 @@ public class CustomerService {
 		  }
 	}
 	
+	
+	public int deleteUser(String msisdn){
+		c= null;
+	      PreparedStatement stmt = null;
+	      int result = 0;
+	      try{
+	    	 c = connect(c);
+	    	 
+	    	 String sql =" DELETE FROM CUSTOMERS WHERE MSISDN = ?;";
+	    	  stmt= c.prepareStatement(sql);
+	    	  stmt.setString(1,msisdn);
+	    	result =  stmt.executeUpdate();
+	    		c.commit();
+	    		
+	    		Jedis jedis = new Jedis("localhost"); 
+	  		  System.out.println("Server is running: "+jedis.ping()); 
+	  		  if(jedis.exists(msisdn)){
+	  			  jedis.del(msisdn);
+	  		  }
+	  		  else{
+	  			  System.out.println("User to delete doesn't exists in cache");
+	  		  }
+	  			  
+	  			
+	      }catch(Exception e){
+	    	 e.printStackTrace();
+	      }
+	      return result;
+		
+	}
 }

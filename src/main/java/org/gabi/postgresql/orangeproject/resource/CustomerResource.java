@@ -118,6 +118,7 @@ public class CustomerResource {
 			@PathParam("value") String value) throws SQLException{
 		
 		boolean update = customerService.updateDB(msisdn,column,value);
+		System.out.println(update + " " + msisdn);
 		if(update ==true) {
 		customerService.updateRedis(msisdn,column,value);
 		}
@@ -125,4 +126,18 @@ public class CustomerResource {
 		return customerService.searchCustomerBD(msisdn);
 			
 	}
+	
+	@DELETE
+	@Path("/delete/{msisdn}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteUser(@PathParam("msisdn") String msisdn){
+		int result = customerService.deleteUser(msisdn);
+		
+			if (result == 1){
+			System.out.println("Delete successful");
+			return "<result>success</result>";
+		}
+			return "<result>failed</result>";
+	}
+	
 }

@@ -1,0 +1,27 @@
+<div class="content">
+<button ng-click="getUsers()">Show all users!</button> 
+<br>
+<br>
+      <form name="SearchForm" ng-submit="searchUser()" novalidate>
+      <input type="number" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
+        <input type="submit" value="Send" ng-disabled="SearchForm.$invalid"/>
+      </form>
+      
+  <ul id="user-list">
+  	<li ng-repeat="user in users">
+  		<h3>{{user.msisdn}}</h3>
+  			<p> {{user.groupProfile + ': ' + user.startDate + ' - ' + user.endDate}}
+  			</p>
+  	  <div class="remove" ng-click= "removeUser(user)">Remove</div>
+  	</li>
+  </ul>
+  
+  
+ <div  ng-show="found">
+  	<h3>{{userX.msisdn}}</h3>  
+  	<h6>  {{userX.groupProfile + ': ' + userX.startDate + ' - ' + userX.endDate}}
+</h6> 
+    	  <div class="remove" ng-click= "removeUser(user)">Remove</div>
+  
+  </div>
+   </div>

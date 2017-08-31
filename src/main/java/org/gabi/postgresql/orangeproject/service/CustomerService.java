@@ -132,6 +132,7 @@ public class CustomerService {
 		         if(rs.next()){
 		         String msisdn = rs.getString(1);
 	        	 	Date startDate = rs.getDate(2);
+	        	 	System.out.println(startDate);
 	        	 	Date endDate = rs.getDate(3);
 	        	 	String groupProfile = rs.getString(4);
 	        	 	 customer = new Customer(msisdn,startDate,endDate,groupProfile);
@@ -157,7 +158,7 @@ public class CustomerService {
 		  
 		  if(hashed != null) {
 		  String msisdn = msisdnToGet;
-		  DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+		  DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
   	 	Date startDate =format.parse(hashed.get("start_date"));
   	 	Date endDate = format.parse(hashed.get("end_date"));
   	 	String groupProfile = hashed.get("group_profile");
@@ -209,14 +210,18 @@ public class CustomerService {
 	      try{
 	    	 c = connect(c);
 	    	  String sql = "UPDATE CUSTOMERS SET " + column + " = ? WHERE MSISDN = ?;";
-
+	    	  System.out.println("value :" + value);
 	    	  stmt= c.prepareStatement(sql);
+	    	  System.out.println(msisdn);
 	    	  stmt.setString(2, msisdn);
 	    	  System.out.println(column);
 	    	  if(column.equalsIgnoreCase("START_DATE") || column.equalsIgnoreCase("END_DATE")){
 	    		  System.out.println("date");
-		    	  DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
+		    	  DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	    		  Date newDate = format.parse(value);
+	    		  System.out.println(newDate);
+	    		  System.out.println(newDate.getTime());
+
 	    		  stmt.setDate(1, new java.sql.Date(newDate.getTime()));
 	    		 
 	    	  }

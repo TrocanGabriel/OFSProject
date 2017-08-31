@@ -212,10 +212,12 @@ public class CustomerService {
 
 	    	  stmt= c.prepareStatement(sql);
 	    	  stmt.setString(2, msisdn);
-	    	  if(column.equals("START_DATE") || column.equals("END_DATE")){
+	    	  System.out.println(column);
+	    	  if(column.equalsIgnoreCase("START_DATE") || column.equalsIgnoreCase("END_DATE")){
+	    		  System.out.println("date");
 		    	  DateFormat format = new SimpleDateFormat("YYYY-MM-DD");
 	    		  Date newDate = format.parse(value);
-	    		  stmt.setDate(1,(java.sql.Date) newDate);
+	    		  stmt.setDate(1, new java.sql.Date(newDate.getTime()));
 	    		 
 	    	  }
 	    	  else{

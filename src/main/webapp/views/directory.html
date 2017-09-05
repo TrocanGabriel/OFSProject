@@ -2,8 +2,19 @@
 <button ng-click="getUsers()">Show all users!</button> 
 <br>
 <br>
-      <form name="SearchForm" ng-submit="searchUser()" novalidate>
+      <form name="SearchForm" ng-submit="searchUser()" novalidate ng-cloak>
       <input type="text" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
+        
+          <md-radio-group ng-model="option">
+
+	 <md-radio-button ng-model="testCheck.button0"
+      					value="0" class="md-primary" >Cache & Database</md-radio-button>
+      <md-radio-button ng-model="testCheck.button1"
+      					value="1" >Database</md-radio-button>
+      <md-radio-button ng-model="testCheck.button2"
+     					value="2"> Cache </md-radio-button>
+
+    </md-radio-group>
         <input type="submit" value="Send" ng-disabled="SearchForm.$invalid"/>
       </form>
       

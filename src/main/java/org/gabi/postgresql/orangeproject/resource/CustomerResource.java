@@ -1,10 +1,14 @@
 package org.gabi.postgresql.orangeproject.resource;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,22 +38,42 @@ public class CustomerResource {
 		Customer foundCustomer = null;
 		
 		try{
-		if(customerService.searchCustomerRedis(searchedMsisdn) != null){
-	foundCustomer = customerService.searchCustomerRedis(searchedMsisdn);
-		}
+			foundCustomer = customerService.searchCustomerRedis(searchedMsisdn);
+		
 	if(foundCustomer != null) {
 		System.out.println("info found in redis");
 	} else{
 	foundCustomer = customerService.searchCustomerBD(searchedMsisdn);
 		if(foundCustomer != null){
 			
+			  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			  
 			  Jedis jedis = new Jedis("localhost");
+			  Long keysCount = jedis.dbSize();
+				 Set<String> keys = jedis.keys("*");
+				 if(keysCount == 2){
+					 String keyToDelete = "";
+					LocalDateTime minTime = LocalDateTime.now();
+					 for(String key : keys){
+						 String timestamp = jedis.hget(key, "timestamp");
+						 LocalDateTime keyTime = LocalDateTime.parse(timestamp, formatter);
+						 if(keyTime.isBefore(minTime)){
+							minTime =  keyTime; 
+							keyToDelete = key;
+						 }
+					 }
+					 jedis.del(keyToDelete);
+					 System.out.println("Deleted from cache: " + keyToDelete);
+				
+				 }
 
 			  Map<String,String> customerDetails = new HashMap<String,String>();
 			  customerDetails.put("start_date", foundCustomer.getStartDate().toString());
 			  customerDetails.put("end_date", foundCustomer.getEndDate().toString());
 			  customerDetails.put("group_profile", foundCustomer.getGroupProfile());
-			  jedis.hmset(searchedMsisdn, customerDetails);
+			  customerDetails.put("timestamp", LocalDateTime.now().format(formatter));
+			  
+			  jedis.hmset(searchedMsisdn, customerDetails); 
 		      System.out.println("redis new info added");
 		}
 	}
@@ -106,7 +130,11 @@ public class CustomerResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Customer addCustomer(Customer newCustomer) throws SQLException{
-		return customerService.insertInDB(newCustomer);
+		Connection c = null;
+		 c = customerService.connect(c);
+		Customer addedCustomer =  customerService.insertInDB(newCustomer,c);
+		c.close();
+		return addedCustomer;
 	}
 	
 	@PUT

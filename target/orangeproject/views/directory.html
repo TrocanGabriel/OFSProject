@@ -2,8 +2,19 @@
 <button ng-click="getUsers()">Show all users!</button> 
 <br>
 <br>
-      <form name="SearchForm" ng-submit="searchUser()" novalidate>
-      <input type="number" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
+      <form name="SearchForm" ng-submit="searchUser()" novalidate ng-cloak>
+      <input type="text" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
+        
+          <md-radio-group ng-model="option">
+
+	 <md-radio-button ng-model="testCheck.button0"
+      					value="0" class="md-primary" >Cache & Database</md-radio-button>
+      <md-radio-button ng-model="testCheck.button1"
+      					value="1" >Database</md-radio-button>
+      <md-radio-button ng-model="testCheck.button2"
+     					value="2"> Cache </md-radio-button>
+
+    </md-radio-group>
         <input type="submit" value="Send" ng-disabled="SearchForm.$invalid"/>
       </form>
       
@@ -12,16 +23,16 @@
   		<h3>{{user.msisdn}}</h3>
   			<p> {{user.groupProfile + ': ' + user.startDate + ' - ' + user.endDate}}
   			</p>
-  	  <div class="remove" ng-click= "removeUser(user)">Remove</div>
+  	  <div class="remove" ng-click= "removeUser($index)">Remove</div>
   	</li>
   </ul>
   
   
- <div  ng-show="found">
+ <div id="user-list" ng-show="found">
   	<h3>{{userX.msisdn}}</h3>  
-  	<h6>  {{userX.groupProfile + ': ' + userX.startDate + ' - ' + userX.endDate}}
-</h6> 
-    	  <div class="remove" ng-click= "removeUser(user)">Remove</div>
+  	  {{userX.groupProfile + ': ' + userX.startDate + ' - ' + userX.endDate}}
+
+    	  <div class="remove" ng-click= "removeUserX(userX)">Remove</div>
   
   </div>
    </div>

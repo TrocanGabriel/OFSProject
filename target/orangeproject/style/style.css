@@ -96,9 +96,35 @@ main{
 
 .remove{
   float: right;
-  padding: 5px;
   text-align: center;
   color: crimson;
   cursor: pointer;
   margin-left: 10px;
 }
+
+/*ANIMATIONS */
+
+main.ng-enter {
+  transition:0.5s linear all;
+  opacity:0;
+}
+
+#user-list li.ng-leave{
+  transition: 0.2s linear all;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#user-list li.ng-leave.ng-leave-active{
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+
+#user-list li.ng-leave-stagger{
+    transition-delay: 0.2s;
+    transition-duration: 0;
+}
+
+/*RADIO BUTTONS */
+

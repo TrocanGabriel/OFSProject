@@ -102,6 +102,8 @@ main{
   margin-left: 10px;
 }
 
+/*ANIMATIONS */
+
 main.ng-enter {
   transition:0.5s linear all;
   opacity:0;
@@ -123,4 +125,6 @@ main.ng-enter {
     transition-delay: 0.2s;
     transition-duration: 0;
 }
+
+/*RADIO BUTTONS */
 

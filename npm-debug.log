@@ -1,0 +1,197 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'keycloak-js-adapter' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.2
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData keycloak-js-adapter
+8 silly fetchNamedPackageData keycloak-js-adapter
+9 silly mapToRegistry name keycloak-js-adapter
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'keycloak-js-adapter',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'keycloak-js-adapter',
+12 silly mapToRegistry   name: 'keycloak-js-adapter',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/keycloak-js-adapter
+14 verbose request uri https://registry.npmjs.org/keycloak-js-adapter
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 10:34:22 AM
+17 verbose request id 97a501d7b8fb98b0
+18 verbose etag W/"57c031b1-19f4"
+19 verbose lastModified Fri, 26 Aug 2016 12:10:25 GMT
+20 http request GET https://registry.npmjs.org/keycloak-js-adapter
+21 http 304 https://registry.npmjs.org/keycloak-js-adapter
+22 verbose headers { date: 'Fri, 01 Sep 2017 07:34:23 GMT',
+22 verbose headers   via: '1.1 varnish',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   etag: 'W/"57c031b1-19f4"',
+22 verbose headers   age: '80',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'x-served-by': 'cache-hhn1535-HHN',
+22 verbose headers   'x-cache': 'HIT',
+22 verbose headers   'x-cache-hits': '1',
+22 verbose headers   'x-timer': 'S1504251264.500791,VS0,VE0',
+22 verbose headers   vary: 'Accept-Encoding, Accept' }
+23 silly get cb [ 304,
+23 silly get   { date: 'Fri, 01 Sep 2017 07:34:23 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     etag: 'W/"57c031b1-19f4"',
+23 silly get     age: '80',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-hhn1535-HHN',
+23 silly get     'x-cache': 'HIT',
+23 silly get     'x-cache-hits': '1',
+23 silly get     'x-timer': 'S1504251264.500791,VS0,VE0',
+23 silly get     vary: 'Accept-Encoding, Accept' } ]
+24 verbose etag https://registry.npmjs.org/keycloak-js-adapter from cache
+25 verbose get saving keycloak-js-adapter to C:\Users\gabri\AppData\Roaming\npm-cache\registry.npmjs.org\keycloak-js-adapter\.cache.json
+26 verbose correctMkdir C:\Users\gabri\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly resolveWithNewModule keycloak-js-adapter@1.0.6 checking installable status
+40 silly cache add args [ 'keycloak-js-adapter', null ]
+41 verbose cache add spec keycloak-js-adapter
+42 silly cache add parsed spec Result {
+42 silly cache add   raw: 'keycloak-js-adapter',
+42 silly cache add   scope: null,
+42 silly cache add   escapedName: 'keycloak-js-adapter',
+42 silly cache add   name: 'keycloak-js-adapter',
+42 silly cache add   rawSpec: '',
+42 silly cache add   spec: 'latest',
+42 silly cache add   type: 'tag' }
+43 silly addNamed keycloak-js-adapter@latest
+44 verbose addNamed "latest" is being treated as a dist-tag for keycloak-js-adapter
+45 info addNameTag [ 'keycloak-js-adapter', 'latest' ]
+46 silly mapToRegistry name keycloak-js-adapter
+47 silly mapToRegistry using default registry
+48 silly mapToRegistry registry https://registry.npmjs.org/
+49 silly mapToRegistry data Result {
+49 silly mapToRegistry   raw: 'keycloak-js-adapter',
+49 silly mapToRegistry   scope: null,
+49 silly mapToRegistry   escapedName: 'keycloak-js-adapter',
+49 silly mapToRegistry   name: 'keycloak-js-adapter',
+49 silly mapToRegistry   rawSpec: '',
+49 silly mapToRegistry   spec: 'latest',
+49 silly mapToRegistry   type: 'tag' }
+50 silly mapToRegistry uri https://registry.npmjs.org/keycloak-js-adapter
+51 verbose addNameTag registry:https://registry.npmjs.org/keycloak-js-adapter not in flight; fetching
+52 verbose get https://registry.npmjs.org/keycloak-js-adapter not expired, no request
+53 silly addNameTag next cb for keycloak-js-adapter with tag latest
+54 silly addNamed keycloak-js-adapter@1.0.6
+55 verbose addNamed "1.0.6" is a plain semver version for keycloak-js-adapter
+56 silly cache afterAdd keycloak-js-adapter@1.0.6
+57 verbose afterAdd C:\Users\gabri\AppData\Roaming\npm-cache\keycloak-js-adapter\1.0.6\package\package.json not in flight; writing
+58 verbose correctMkdir C:\Users\gabri\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+59 verbose afterAdd C:\Users\gabri\AppData\Roaming\npm-cache\keycloak-js-adapter\1.0.6\package\package.json written
+60 silly fetchOtherPackageData keycloak-js@git+https://github.com/keycloak/keycloak-js-bower.git
+61 silly cache add args [ 'keycloak-js@git+https://github.com/keycloak/keycloak-js-bower.git',
+61 silly cache add   null ]
+62 verbose cache add spec keycloak-js@git+https://github.com/keycloak/keycloak-js-bower.git
+63 silly cache add parsed spec Result {
+63 silly cache add   raw: 'keycloak-js@git+https://github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add   scope: null,
+63 silly cache add   escapedName: 'keycloak-js',
+63 silly cache add   name: 'keycloak-js',
+63 silly cache add   rawSpec: 'git+https://github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add   spec: 'git+https://github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add   type: 'hosted',
+63 silly cache add   hosted:
+63 silly cache add    { type: 'github',
+63 silly cache add      ssh: 'git@github.com:keycloak/keycloak-js-bower.git',
+63 silly cache add      sshUrl: 'git+ssh://git@github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add      httpsUrl: 'git+https://github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add      gitUrl: 'git://github.com/keycloak/keycloak-js-bower.git',
+63 silly cache add      shortcut: 'github:keycloak/keycloak-js-bower',
+63 silly cache add      directUrl: 'https://raw.githubusercontent.com/keycloak/keycloak-js-bower/master/package.json' } }
+64 verbose addRemoteGit caching git+https://github.com/keycloak/keycloak-js-bower.git
+65 verbose addRemoteGit git+https://github.com/keycloak/keycloak-js-bower.git is a repository hosted by github
+66 silly tryClone cloning git+https://github.com/keycloak/keycloak-js-bower.git via git+https://github.com/keycloak/keycloak-js-bower.git
+67 verbose tryClone git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342 not in flight; caching
+68 verbose correctMkdir C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes correctMkdir not in flight; initializing
+69 warn addRemoteGit Error: not found: git
+69 warn addRemoteGit     at getNotFoundError (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:14:12)
+69 warn addRemoteGit     at F (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:69:19)
+69 warn addRemoteGit     at E (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:81:29)
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:90:16
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\index.js:44:5
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\windows.js:29:5
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:264:29
+69 warn addRemoteGit     at FSReqWrap.oncomplete (fs.js:123:15)
+69 warn addRemoteGit  git+https://github.com/keycloak/keycloak-js-bower.git resetting remote C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342 because of error: { Error: not found: git
+69 warn addRemoteGit     at getNotFoundError (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:14:12)
+69 warn addRemoteGit     at F (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:69:19)
+69 warn addRemoteGit     at E (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:81:29)
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:90:16
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\index.js:44:5
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\windows.js:29:5
+69 warn addRemoteGit     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:264:29
+69 warn addRemoteGit     at FSReqWrap.oncomplete (fs.js:123:15) code: 'ENOGIT' }
+70 info resetRemote resetting C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342 for git+https://github.com/keycloak/keycloak-js-bower.git
+71 silly gentlyRm C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342 is being purged
+72 verbose gentlyRm don't care about contents; nuking C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342
+73 silly vacuum-fs purging C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342
+74 silly vacuum-fs quitting because other entries in C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes
+75 error git clone --template=C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/keycloak/keycloak-js-bower.git C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342: undefined
+75 error git clone --template=C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/keycloak/keycloak-js-bower.git C:\Users\gabri\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-keycloak-keycloak-js-bower-git-4f22f342: undefined
+76 silly fetchPackageMetaData Error: not found: git
+76 silly fetchPackageMetaData     at getNotFoundError (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:14:12)
+76 silly fetchPackageMetaData     at F (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:69:19)
+76 silly fetchPackageMetaData     at E (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:81:29)
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:90:16
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\index.js:44:5
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\windows.js:29:5
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:264:29
+76 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:123:15)
+76 silly fetchPackageMetaData  error for keycloak-js@git+https://github.com/keycloak/keycloak-js-bower.git { Error: not found: git
+76 silly fetchPackageMetaData     at getNotFoundError (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:14:12)
+76 silly fetchPackageMetaData     at F (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:69:19)
+76 silly fetchPackageMetaData     at E (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:81:29)
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:90:16
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\index.js:44:5
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\windows.js:29:5
+76 silly fetchPackageMetaData     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:264:29
+76 silly fetchPackageMetaData     at FSReqWrap.oncomplete (fs.js:123:15) code: 'ENOGIT' }
+77 silly rollbackFailedOptional Starting
+78 silly rollbackFailedOptional Finishing
+79 silly runTopLevelLifecycles Finishing
+80 silly install printInstalled
+81 verbose stack Error: not found: git
+81 verbose stack     at getNotFoundError (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:14:12)
+81 verbose stack     at F (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:69:19)
+81 verbose stack     at E (C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:81:29)
+81 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\which.js:90:16
+81 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\index.js:44:5
+81 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\which\node_modules\isexe\windows.js:29:5
+81 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:264:29
+81 verbose stack     at FSReqWrap.oncomplete (fs.js:123:15)
+82 verbose cwd e:\JAVA\workspace\orangeproject
+83 error Windows_NT 10.0.15063
+84 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "keycloak-js-adapter"
+85 error node v6.11.2
+86 error npm  v3.10.10
+87 error code ENOGIT
+88 error not found: git
+89 error Failed using git.
+89 error This is most likely not a problem with npm itself.
+89 error Please check if you have git installed and in your PATH.
+90 verbose exit [ 1, true ]

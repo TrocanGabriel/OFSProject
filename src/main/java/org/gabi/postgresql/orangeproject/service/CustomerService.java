@@ -1,6 +1,7 @@
 package org.gabi.postgresql.orangeproject.service;
 
 import java.sql.Connection;
+import org.fluttercode.datafactory.impl.DataFactory;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,19 +10,29 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Random;
+
 
 import org.gabi.postgresql.orangeproject.model.Customer;
 
 import redis.clients.jedis.Jedis;
-
+/*
+ * TASKS:
+ * 
+ */
 public class CustomerService {
 	
-	
+	//private CustomerService customerService = new CustomerService();
 	private Connection c = null;
+	private Random random;
+	private DataFactory df = new DataFactory();
 
 
 	public void close(PreparedStatement preparedStatement, Connection c) {
@@ -36,6 +47,7 @@ public class CustomerService {
 		if (c != null) {
 			try {
 				c.close();
+				System.out.println("Connection closed!");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -71,6 +83,8 @@ public class CustomerService {
 		try {
 			c = DriverManager
 					.getConnection("jdbc:postgresql://localhost:5432/testdb", "postgres", "12345");
+	         System.out.println("Opened database successfully");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -80,8 +94,92 @@ public class CustomerService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	         System.out.println("Opened database successfully");
+		  if(checkDB(c)){
+			  System.out.println("DB is already populated");
+		  }
+		  
 			return c;
+	}
+	
+	public boolean checkDB(Connection c){
+		  PreparedStatement stmt = null;
+	         ResultSet resultSet = null;
+             boolean empty = false;
+             try {
+	         String qry = "SELECT count(*) from CUSTOMERS ";
+	       
+	             stmt = (PreparedStatement) c.prepareStatement(qry);
+	             resultSet =  stmt.executeQuery();
+	             resultSet.next();
+	             System.out.println(resultSet.getInt(1));
+	             if(resultSet.getInt(1) == 0){
+	            	 System.out.println("Database is empty! Let's populate it!");
+	            	 populateDB(c);
+	            	 empty = false;
+	             } else {
+	            	 empty = true;
+	             }
+					resultSet.close();
+					
+	         } catch(SQLException e){
+	        	 e.printStackTrace();
+	         }
+	         
+	        
+	         return empty;
+	}
+	
+	
+	public void populateDB(Connection c){
+	
+			Date minDate;
+			Date maxDate;
+			Date start_date ;
+			String group_profile;
+			Date end_date;
+			Date minDateEnd;
+			Date maxDateEnd;
+			Customer newCustomer;
+
+			try {
+				 minDate = new Date();
+				 maxDate= new Date();
+				 minDateEnd = new Date();
+				 maxDateEnd = new Date();
+				 start_date = new Date();
+				 group_profile = "";
+				 end_date = new Date();
+					String msisdn = "";
+					random = new Random();
+					
+					for(int index = 1;index <= 2000;index++){
+						msisdn = "40";
+								for (int i = 0; i < 10; i++) {
+							msisdn = msisdn + random.nextInt(10);
+								}
+								
+				minDate = new SimpleDateFormat( "yyyy-mm-dd" ).parse( "2000-05-20" );
+				maxDate = new SimpleDateFormat( "yyyy-mm-dd" ).parse( "2013-05-20" );
+				start_date = df.getDateBetween(minDate, maxDate);
+			 
+				minDateEnd = new SimpleDateFormat( "yyyy-mm-dd" ).parse( "2013-05-20" );
+				maxDateEnd = new SimpleDateFormat( "yyyy-mm-dd" ).parse( "2020-06-20" );
+				end_date = df.getDateBetween(minDateEnd, maxDateEnd);
+					
+			int profile = random.nextInt(2);
+			if(profile == 0) {
+				group_profile = "UP";
+			} else {
+				group_profile = "DOWN";
+			}
+			 newCustomer = new Customer(msisdn,start_date,end_date,group_profile);
+			insertInDB(newCustomer,c);
+					
+					}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		
 	}
 	
 	
@@ -106,8 +204,7 @@ public class CustomerService {
 		         
 		         
 		} catch ( Exception e ) {
-		    System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-		    System.exit(0);
+		   e.printStackTrace();
 		 } finally { close(stmt,c);
 
 		 }
@@ -132,16 +229,15 @@ public class CustomerService {
 		         if(rs.next()){
 		         String msisdn = rs.getString(1);
 	        	 	Date startDate = rs.getDate(2);
-	        	 	System.out.println(startDate);
 	        	 	Date endDate = rs.getDate(3);
 	        	 	String groupProfile = rs.getString(4);
 	        	 	 customer = new Customer(msisdn,startDate,endDate,groupProfile);
 		 		}   
 		         rs.close();
 		} catch ( Exception e ) {
-		    System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-		    System.exit(0);
-		 } finally {		close(preparedStatement,c);
+		   e.printStackTrace();
+		 } finally {		
+			 close(preparedStatement,c);
 			}
 		
 		return customer;
@@ -153,6 +249,8 @@ public class CustomerService {
 	
 		  Jedis jedis = new Jedis("localhost"); 
 		  System.out.println("Server is running: "+jedis.ping()); 
+
+		
 		  if(jedis.exists(msisdnToGet)){
 			  Map<String, String> hashed = jedis.hgetAll(msisdnToGet);
 		  
@@ -162,7 +260,12 @@ public class CustomerService {
   	 	Date startDate =format.parse(hashed.get("start_date"));
   	 	Date endDate = format.parse(hashed.get("end_date"));
   	 	String groupProfile = hashed.get("group_profile");
-		  
+  	 	
+  	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+  	 hashed.put("timestamp", LocalDateTime.now().format(formatter));
+	  jedis.hmset(msisdnToGet, hashed);
+
+	  
 		  customer = new Customer(msisdn,startDate,endDate,groupProfile);
 		  } else{
 			  System.out.println("Searched Customer was found in Redis but has no information");
@@ -173,17 +276,15 @@ public class CustomerService {
 		return customer;
 	}
 	
-	
-	public Customer insertInDB(Customer newCustomer) throws SQLException{
-		 c = null;
+
+	public Customer insertInDB(Customer newCustomer,Connection c) throws SQLException{
 	      PreparedStatement stmt = null;
 	      try {
-	        c = connect(c);
+	       
 	       
 	         String sql = "INSERT INTO CUSTOMERS (MSISDN, START_DATE, END_DATE, GROUP_PROFILE) "
 	                 + "VALUES (?,?,?,?)";
 	         
-	System.out.println(newCustomer);
 	         stmt = c.prepareStatement(sql);
 	         stmt.setString(1, newCustomer.getMsisdn());
 	         stmt.setDate(2,  new java.sql.Date(newCustomer.getStartDate().getTime()));
@@ -195,10 +296,8 @@ public class CustomerService {
     } catch (Exception e) {
 
     	e.printStackTrace();
-     } finally{ 
-    	 close(stmt,c);
-     }
-     System.out.println("Records created successfully");
+     } 
+  
    return newCustomer;
 }
 	
@@ -210,24 +309,16 @@ public class CustomerService {
 	      try{
 	    	 c = connect(c);
 	    	  String sql = "UPDATE CUSTOMERS SET " + column + " = ? WHERE MSISDN = ?;";
-	    	  System.out.println("value :" + value);
 	    	  stmt= c.prepareStatement(sql);
-	    	  System.out.println(msisdn);
 	    	  stmt.setString(2, msisdn);
-	    	  System.out.println(column);
 	    	  if(column.equalsIgnoreCase("START_DATE") || column.equalsIgnoreCase("END_DATE")){
-	    		  System.out.println("date");
 		    	  DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	    		  Date newDate = format.parse(value);
-	    		  System.out.println(newDate);
-	    		  System.out.println(newDate.getTime());
-
 	    		  stmt.setDate(1, new java.sql.Date(newDate.getTime()));
 	    		 
 	    	  }
 	    	  else{
 	    		  stmt.setString(1, value);
-	    		 System.out.println(value);
 	    	  }
 	    		stmt.executeUpdate();
 	    		c.commit();

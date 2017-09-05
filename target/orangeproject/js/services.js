@@ -1,4 +1,3 @@
-
 var app=angular.module('Orange',['ngRoute','ngAnimate','ngMaterial']);
 
 
@@ -23,6 +22,7 @@ angular.element(document).ready( function($http) {
             window._keycloak.loadUserProfile().success(function(profile){
   
                 angular.bootstrap(document, ['Orange']); // manually bootstrap Angular
+                
             });
         }
         else {
@@ -44,14 +44,12 @@ app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.common['Authorization'] = 'BEARER ' + token;
 }]);
 
-
 app.config(['$routeProvider',function($routeProvider){
 	
 	
 $routeProvider
  	.when('/home',{
       templateUrl: 'views/home.html',
-      controller: 'HomeController'
     })
     .when('/contact',{
       templateUrl: 'views/contact.html',
@@ -68,24 +66,27 @@ $routeProvider
     .when('/directory',{
       templateUrl: 'views/directory.html',
       controller: 'ServicesController'
-    }).otherwise({
+    })
+    .otherwise({
       redirectTo: '/home'
     });
     
 
 }]);
 
-app.controller('HeaderController',['$scope','keycloak', function($scope) {
+app.controller('HeaderController',['$scope','keycloak', function($scope,keycloak) {
 	
+	$scope.logoutMess ="HELLO LOG"
 	$scope.userLogout = function(){
 		keycloak.logout();
-		//		$window.location.href = 'http://localhost:8080/auth/realms/{realm-name}/protocol/openid-connect/logout?redirect_uri='
 		};
-
-	
 }]);
+
+
+
 app.controller('ServicesController',['$scope','$http','keycloak', '$templateCache', function($scope, $http, $templateCache, keycloak) {
 
+	
 	$scope.method = 'GET';
 	$scope.url = 'http://localhost:9090/orangeproject/webapi/customers';
 	$scope.getUsers = function() {
@@ -153,6 +154,21 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 
 		});
 	};
+	
+	$scope.addUsers = function(){
+		$scope.users = [];
+		$scope.userX = null;
+
+		$http({method: $scope.method, url: $scope.url + '/addSubscribers'}).
+		then(function(response){
+	          $scope.status = response.status;
+	          $scope.users = response.data;
+	      	$scope.found = false;
+		}, function(response){
+			$scope.users = response.data || 'Request failed';
+	          $scope.status = response.status;		
+	    });
+	}
 }]);
 
 

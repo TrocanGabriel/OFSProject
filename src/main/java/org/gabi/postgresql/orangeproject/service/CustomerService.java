@@ -370,6 +370,34 @@ public class CustomerService {
 	      }catch(Exception e){
 	    	 e.printStackTrace();
 	      }
+	      return result;		
+	}
+	
+	
+	
+	public int deleteUsers(){
+		c= null;
+	      PreparedStatement stmt = null;
+	      int result = 0;
+	      try{
+	    	 c = connect(c);
+	    	 
+	    	 String sql =" DELETE FROM CUSTOMERS;";
+	    	  stmt= c.prepareStatement(sql);
+	    	 
+	    	result =  stmt.executeUpdate();
+	    		c.commit();
+	    		
+	    		Jedis jedis = new Jedis("localhost"); 
+	  		  System.out.println("Server is running: "+jedis.ping()); 
+	  		Set<String> keys = jedis.keys("*");
+	  		for (String key : keys) {
+	  		    jedis.del(key);
+	  		} 
+	  			
+	      }catch(Exception e){
+	    	 e.printStackTrace();
+	      }
 	      return result;
 		
 	}

@@ -32,6 +32,19 @@ public class CustomerResource {
 	}
 	
 	@GET
+	@Path("/addSubscribers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Customer> addCustomers() throws SQLException {
+		Connection c = null;
+		 c = customerService.connect(c);
+		 customerService.populateDB(c);
+			c.close();
+			return customerService.getAllCustomers();
+	}
+
+
+	
+	@GET
 	@Path("{searchedMsisdn}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Customer getCustomer(@PathParam("searchedMsisdn") String searchedMsisdn) throws SQLException, ParseException{
@@ -160,6 +173,19 @@ public class CustomerResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteUser(@PathParam("msisdn") String msisdn){
 		int result = customerService.deleteUser(msisdn);
+		
+			if (result == 1){
+			System.out.println("Delete successful");
+			return "<result>success</result>";
+		}
+			return "<result>failed</result>";
+	}
+	
+	@DELETE
+	@Path("/deleteAll")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteUsers(){
+		int result = customerService.deleteUsers();
 		
 			if (result == 1){
 			System.out.println("Delete successful");

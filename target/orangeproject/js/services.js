@@ -76,7 +76,6 @@ $routeProvider
 
 app.controller('HeaderController',['$scope','keycloak', function($scope,keycloak) {
 	
-	$scope.logoutMess ="HELLO LOG"
 	$scope.userLogout = function(){
 		keycloak.logout();
 		};
@@ -90,7 +89,6 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 	$scope.method = 'GET';
 	$scope.url = 'http://localhost:9090/orangeproject/webapi/customers';
 	$scope.getUsers = function() {
-		  $scope.isTokenExpired = keycloak.isTokenExpired;
 	$scope.users = [];
 	$scope.userX = null;
 	$http({method: $scope.method, url:$scope.url}).

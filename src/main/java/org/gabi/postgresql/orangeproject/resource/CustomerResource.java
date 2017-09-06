@@ -27,8 +27,11 @@ public class CustomerResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Customer> getCustomers() throws SQLException {
-		return customerService.getAllCustomers();
-		
+        long a = System.currentTimeMillis();
+		List<Customer> customers =  customerService.getAllCustomers();
+        long b = System.currentTimeMillis();
+        System.out.println( "The process of receiving all subscribers from database took "+(b-a)+"milliseconds to execute." + "\n" + "("+((b-a)/1000)+" seconds)");
+		return customers;
 	}
 	
 	@GET
@@ -64,7 +67,7 @@ public class CustomerResource {
 			  Jedis jedis = new Jedis("localhost");
 			  Long keysCount = jedis.dbSize();
 				 Set<String> keys = jedis.keys("*");
-				 if(keysCount == 2){
+				 if(keysCount == 20){
 					 String keyToDelete = "";
 					LocalDateTime minTime = LocalDateTime.now();
 					 for(String key : keys){

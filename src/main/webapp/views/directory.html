@@ -30,10 +30,10 @@
   </ul>
   
   
- <div id="user-list" ng-show="found">
+ <div id="user-list" ng-hide="!found">
   	<h3>{{userX.msisdn}}</h3>  
-  	  {{userX.groupProfile + ': ' + userX.startDate + ' - ' + userX.endDate}}
-
+  	 <p> {{userX.groupProfile}}: {{userX.startDate}}  - {{userX.endDate}}
+</p>
     	  <div class="remove" ng-click= "removeUserX(userX)">Remove</div>
   
   </div>

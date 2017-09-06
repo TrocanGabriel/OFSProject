@@ -38,7 +38,6 @@ angular.module('Orange').factory('keycloak', $window => {
 	  return $window._keycloak;
 	});
 
-//use bearer token when calling backend
 app.config(['$httpProvider', function($httpProvider) {
     var token = window._keycloak.token;     
     $httpProvider.defaults.headers.common['Authorization'] = 'BEARER ' + token;
@@ -116,6 +115,7 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 	$scope.status = response.status;
 	$scope.userX = response.data;
 	$scope.found = true;
+	$scope.deleted = false;
     $scope.testCheck = {}
 
 	}, function(response) {

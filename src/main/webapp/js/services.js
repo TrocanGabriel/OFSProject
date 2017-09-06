@@ -96,7 +96,7 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 	$scope.status = response.status;
 	$scope.users = response.data;
 	$scope.found = false;
-    $scope.deleted = false;
+    $scope.deleted = true;
 	}, function(response) {
 	$scope.users = response.data || 'Request failed';
           $scope.status = response.status;

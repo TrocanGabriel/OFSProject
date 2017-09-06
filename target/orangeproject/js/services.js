@@ -96,6 +96,7 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 	$scope.status = response.status;
 	$scope.users = response.data;
 	$scope.found = false;
+    $scope.deleted = false;
 	}, function(response) {
 	$scope.users = response.data || 'Request failed';
           $scope.status = response.status;
@@ -167,6 +168,20 @@ app.controller('ServicesController',['$scope','$http','keycloak', '$templateCach
 	          $scope.status = response.status;		
 	    });
 	}
+	
+	$scope.deleteAll = function(){
+		$scope.users = [];
+		$http({method: $scope.delMethod, url: $scope.url + '/deleteAll'}).
+		then(function(response){
+	          $scope.status = response.status;
+		}, function(response){
+	          $scope.status = response.status;
+	          $scope.deleted = false;
+				$scope.userX = [];
+
+		});
+	}
+
 }]);
 
 

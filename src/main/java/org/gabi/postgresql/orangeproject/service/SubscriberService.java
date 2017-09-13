@@ -20,16 +20,15 @@ import java.util.Set;
 import java.util.Random;
 
 
-import org.gabi.postgresql.orangeproject.model.Customer;
+import org.gabi.postgresql.orangeproject.model.Subscriber;
 
 import redis.clients.jedis.Jedis;
 /*
  * TASKS:
  * 
  */
-public class CustomerService {
+public class SubscriberService {
 	
-	//private CustomerService customerService = new CustomerService();
 	private Connection c = null;
 	private Random random;
 	private DataFactory df = new DataFactory();
@@ -139,7 +138,7 @@ public class CustomerService {
 			Date end_date;
 			Date minDateEnd;
 			Date maxDateEnd;
-			Customer newCustomer;
+			Subscriber newSubscriber;
 
 			try {
 				 minDate = new Date();
@@ -172,8 +171,8 @@ public class CustomerService {
 			} else {
 				group_profile = "DOWN";
 			}
-			 newCustomer = new Customer(msisdn,start_date,end_date,group_profile);
-			insertInDB(newCustomer,c);
+			 newSubscriber = new Subscriber(msisdn,start_date,end_date,group_profile);
+			insertInDB(newSubscriber,c);
 					
 					}
 			} catch (Exception e) {
@@ -183,10 +182,10 @@ public class CustomerService {
 	}
 	
 	
-	public List<Customer> getAllCustomers() throws SQLException{
+	public List<Subscriber> getAllCustomers() throws SQLException{
 	c = null;
 		Statement stmt = null;
-		List<Customer> customers = new ArrayList<>();
+		List<Subscriber> subscribers = new ArrayList<>();
 		try { 
 				c= connect(c);
 		         stmt = c.createStatement();
@@ -196,8 +195,8 @@ public class CustomerService {
 		        	 	Date startDate = rs.getDate(2);
 		        	 	Date endDate = rs.getDate(3);
 		        	 	String groupProfile = rs.getString(4);
-		        	 	Customer customer = new Customer(msisdn,startDate,endDate,groupProfile);
-		        	 	customers.add(customer);
+		        	 	Subscriber subscriber = new Subscriber(msisdn,startDate,endDate,groupProfile);
+		        	 	subscribers.add(subscriber);
 		        	 	
 		         }
 		        rs.close();
@@ -209,14 +208,55 @@ public class CustomerService {
 
 		 }
 		
-		return customers;
+		return subscribers;
 }
 	
 	
-	public Customer searchCustomerBD(String msisdnToGet) throws SQLException{
+	public List<Subscriber> getSubscribersCache() {
+		
+		Subscriber subscriber = null;
+		List<Subscriber> subscribers = new ArrayList<>();
+
+		 Jedis jedis = new Jedis("localhost"); 
+		  System.out.println("Server is running: "+jedis.ping()); 
+	  		Set<String> keys = jedis.keys("*");
+	  		
+	  			for(String key : keys){
+ Map<String, String> hashed = jedis.hgetAll(key);
+		  
+		  if(hashed != null) {
+		  String msisdn = key;
+		  DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+  	 	Date startDate = null;
+  	 	Date endDate = null;
+		try {
+			endDate = format.parse(hashed.get("end_date"));
+			startDate = format.parse(hashed.get("start_date"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+  	 	String groupProfile = hashed.get("group_profile");
+  	 	
+  	  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+  	 hashed.put("timestamp", LocalDateTime.now().format(formatter));
+	  jedis.hmset(key, hashed);
+
+	  
+		  subscriber = new Subscriber(msisdn,startDate,endDate,groupProfile);
+		  subscribers.add(subscriber);
+	}else{
+		  System.out.println("Searched Customer was found in Redis but has no information");
+	}
+  }
+				return subscribers;	
+}
+	
+
+	
+	public Subscriber searchSubscriberBD(String msisdnToGet) throws SQLException{
 		PreparedStatement preparedStatement = null;
 	 c = null;
-		Customer customer  = null;
+		Subscriber subscriber  = null;
 		String selectSQL = "SELECT * FROM CUSTOMERS WHERE MSISDN = ?";
 		
 		try {
@@ -231,7 +271,7 @@ public class CustomerService {
 	        	 	Date startDate = rs.getDate(2);
 	        	 	Date endDate = rs.getDate(3);
 	        	 	String groupProfile = rs.getString(4);
-	        	 	 customer = new Customer(msisdn,startDate,endDate,groupProfile);
+	        	 	 subscriber = new Subscriber(msisdn,startDate,endDate,groupProfile);
 		 		}   
 		         rs.close();
 		} catch ( Exception e ) {
@@ -240,12 +280,12 @@ public class CustomerService {
 			 close(preparedStatement,c);
 			}
 		
-		return customer;
+		return subscriber;
 	}
 	
 	
-	public Customer searchCustomerRedis(String msisdnToGet) throws ParseException{
-		Customer customer  = null;
+	public Subscriber searchSubscriberRedis(String msisdnToGet) throws ParseException{
+		Subscriber subscriber  = null;
 	
 		  Jedis jedis = new Jedis("localhost"); 
 		  System.out.println("Server is running: "+jedis.ping()); 
@@ -266,18 +306,18 @@ public class CustomerService {
 	  jedis.hmset(msisdnToGet, hashed);
 
 	  
-		  customer = new Customer(msisdn,startDate,endDate,groupProfile);
+		  subscriber = new Subscriber(msisdn,startDate,endDate,groupProfile);
 		  } else{
 			  System.out.println("Searched Customer was found in Redis but has no information");
 		  }
 	 } else {System.out.println("Searched Customer doesn't exists in Redis!");
 	 }
 	 
-		return customer;
+		return subscriber;
 	}
 	
 
-	public Customer insertInDB(Customer newCustomer,Connection c) throws SQLException{
+	public Subscriber insertInDB(Subscriber newSubscriber,Connection c) throws SQLException{
 	      PreparedStatement stmt = null;
 	      try {
 	       
@@ -286,10 +326,10 @@ public class CustomerService {
 	                 + "VALUES (?,?,?,?)";
 	         
 	         stmt = c.prepareStatement(sql);
-	         stmt.setString(1, newCustomer.getMsisdn());
-	         stmt.setDate(2,  new java.sql.Date(newCustomer.getStartDate().getTime()));
-	         stmt.setDate(3, new java.sql.Date(newCustomer.getEndDate().getTime()));
-	         stmt.setString(4, newCustomer.getGroupProfile());
+	         stmt.setString(1, newSubscriber.getMsisdn());
+	         stmt.setDate(2,  new java.sql.Date(newSubscriber.getStartDate().getTime()));
+	         stmt.setDate(3, new java.sql.Date(newSubscriber.getEndDate().getTime()));
+	         stmt.setString(4, newSubscriber.getGroupProfile());
 	         
 	         stmt.executeUpdate();	
 	         c.commit();
@@ -298,7 +338,7 @@ public class CustomerService {
     	e.printStackTrace();
      } 
   
-   return newCustomer;
+   return newSubscriber;
 }
 	
 	
@@ -344,7 +384,7 @@ public class CustomerService {
 	}
 	
 	
-	public int deleteUser(String msisdn){
+	public int deleteSubscriber(String msisdn){
 		c= null;
 	      PreparedStatement stmt = null;
 	      int result = 0;
@@ -375,7 +415,7 @@ public class CustomerService {
 	
 	
 	
-	public int deleteUsers(){
+	public int deleteSubscribers(){
 		c= null;
 	      PreparedStatement stmt = null;
 	      int result = 0;
@@ -401,4 +441,27 @@ public class CustomerService {
 	      return result;
 		
 	}
+	
+	public boolean deleteCache(){
+		
+	      boolean result = false;
+		Jedis jedis = new Jedis("localhost"); 
+		  System.out.println("Server is running: "+jedis.ping()); 
+		  
+		Set<String> keys = jedis.keys("*");
+		for (String key : keys) {
+		    jedis.del(key);
+		} 
+		
+		Set<String> keysLeft = jedis.keys("*");
+		if(keysLeft.isEmpty()){
+			result = true;
+			System.out.println("Cache was deleted");
+		} else {
+			System.out.println("Cache deletion failed");
+		}
+	      return result;
+
+	}
+	
 }

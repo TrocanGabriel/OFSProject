@@ -83,6 +83,30 @@
             <artifactId>keycloak-tomcat8-adapter</artifactId>
             <version>3.2.1.Final</version>
         </dependency>
+<dependency>
+    <groupId>org.keycloak</groupId>
+    <artifactId>keycloak-wildfly-extensions</artifactId>
+    <version>3.2.1.Final</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-services -->
+<dependency>
+    <groupId>org.keycloak</groupId>
+    <artifactId>keycloak-services</artifactId>
+    <version>3.2.1.Final</version>
+    <scope>provided</scope>
+</dependency>
+    <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-authz-client</artifactId>
+        <version>3.2.1.Final</version>
+    </dependency>
+<!-- https://mvnrepository.com/artifact/org.jboss.ejb3/jboss-ejb3-ext-api -->
+<dependency>
+    <groupId>org.jboss.ejb3</groupId>
+    <artifactId>jboss-ejb3-ext-api</artifactId>
+    <version>2.2.0.Final</version>
+</dependency>
 
  
     </dependencies>

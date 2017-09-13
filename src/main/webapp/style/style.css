@@ -73,8 +73,14 @@ main{
 .content li span{
   float: right;
 }
-
+ 
 .content li h3{
+  display: inline-block;
+  font-weight: normal;
+  font-size: 22px;
+}
+
+.content h3{
   display: inline-block;
   font-weight: normal;
   font-size: 22px;
@@ -109,19 +115,19 @@ main.ng-enter {
   opacity:0;
 }
 
-#user-list li.ng-leave{
+#subscriber-list ul.ng-leave{
   transition: 0.2s linear all;
   opacity: 1;
   transform: translateX(0);
 }
 
-#user-list li.ng-leave.ng-leave-active{
+#subscriber-list ul.ng-leave.ng-leave-active{
   opacity: 0;
   transform: translateX(-100%);
 }
 
 
-#user-list li.ng-leave-stagger{
+#subscriber-list ul.ng-leave-stagger{
     transition-delay: 0.2s;
     transition-duration: 0;
 }

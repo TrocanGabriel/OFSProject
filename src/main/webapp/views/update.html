@@ -1,23 +1,26 @@
 <div class="content">
 <br>
 <br>
-<h1>Update Users</h1>
- 	 <button ng-init="formAdd=false" ng-click="formAdd=!formAdd">Add new user</button>
-      <button ng-init="formUpdate=false" ng-click="formUpdate=!formUpdate">Update existing user</button>
+<h1>Update Subscribers</h1>
+ 	 <button ng-init="formAdd=false" ng-click="formAdd=!formAdd">Add subscriber</button>
+      <button ng-init="formUpdate=false" ng-click="formUpdate=!formUpdate">Update existing subscriber</button>
 
-  <form ng-submit="addUser()" ng-show="formAdd">
-        <input type="text" placeholder="msisdn" ng-model="fields.msisdn">
+  <form ng-submit="addSubscriber()" ng-show="formAdd" name="addForm">
+        <input name="addMsisdn" type="text" placeholder="msisdn" ng-pattern="regExMsisdn" ng-model="fields.msisdn">
+          <span style="color:red" ng-show="addForm.addMsisdn.$valid">
+  <span ng-show="addForm.addMsisdn.$invalid">Msisdn is required.</span> 
+  </span>  
         <input type="text" placeholder="groupProfile" ng-model="fields.groupProfile">        
         <input type="text" placeholder="startDate" ng-model="fields.startDate">
         <input type="text" placeholder="endDate" ng-model="fields.endDate">
         
-        <input type="submit" value="Add new User">
+        <input type="submit" value="Add Subscribers">
       </form>
       
-  <form ng-submit="updateUser()" ng-show="formUpdate">
+  <form ng-submit="updateSubscriber()" ng-show="formUpdate">
         <input type="text" placeholder="msisdn" ng-model="updatedMsisdn">
         <input type="text" placeholder="field" ng-model="updatedField">
         <input type="text" placeholder="value" ng-model="updatedValue">
         
-        <input type="submit" value="Update User">
+        <input type="submit" value="Update Subscriber">
       </form>

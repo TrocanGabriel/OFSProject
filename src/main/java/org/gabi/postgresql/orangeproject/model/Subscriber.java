@@ -2,7 +2,7 @@ package org.gabi.postgresql.orangeproject.model;
 
 import java.util.Date;
 
-public class Customer {
+public class Subscriber {
 
 	
 	private String msisdn;
@@ -10,11 +10,11 @@ public class Customer {
 	private Date endDate;
 	private String groupProfile;
 	
-	public Customer() {
+	public Subscriber() {
 		
 	}
 	
-	public Customer(String msisdn, Date startDate, Date endDate, String groupProfile) {
+	public Subscriber(String msisdn, Date startDate, Date endDate, String groupProfile) {
 		super();
 		this.msisdn = msisdn;
 		this.startDate = startDate;

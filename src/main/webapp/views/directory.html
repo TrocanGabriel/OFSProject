@@ -1,10 +1,13 @@
 <div class="content">
-<button ng-click="getUsers()">Show all Subscribers!</button> 
-<button ng-click="addUsers()">Add 2000 random Subscribers!</button>
+<button ng-click="getSubscribers()">Show all Subscribers!</button> 
+<button ng-click="addSubscribers()">Add 2000 random Subscribers!</button>
+<button ng-click="getSubscribersCache()">Show cache data!</button>
 <button ng-click="deleteAll()">Delete all Subscribers!</button>
+<button ng-click="deleteCache()">Delete cache data!</button>
+
 <br>
 <br>
-      <form name="SearchForm" ng-submit="searchUser()" novalidate ng-cloak>
+      <form name="SearchForm" ng-submit="searchSubscriber()" novalidate ng-cloak>
       <input type="text" name="msisdn" placeholder="search msisdn" ng-model="searchedMsisdn" ng-required="true"/>
         
           <md-radio-group ng-model="option">
@@ -20,21 +23,21 @@
         <input type="submit" value="Send" ng-disabled="SearchForm.$invalid"/>
       </form>
       
-  <ul id="user-list" ng-show="deleted">
-  	<li ng-repeat="user in users">
-  		<h3>{{user.msisdn}}</h3>
-  			<p> {{user.groupProfile + ': ' + user.startDate + ' - ' + user.endDate}}
+  <ul id="subscriber-list" ng-show="deleted">
+  	<li ng-repeat="subscriber in subscribers">
+  		<h3>{{subscriber.msisdn}}</h3>
+  			<p> {{subscriber.groupProfile + ': ' + subscriber.startDate + ' - ' + subscriber.endDate}}
   			</p>
-  	  <div class="remove" ng-click= "removeUser($index)">Remove</div>
+  	  <div class="remove" ng-click= "removeSubscriber($index)">Remove</div>
   	</li>
   </ul>
   
   
- <div id="user-list" ng-hide="!found">
-  	<h3>{{userX.msisdn}}</h3>  
-  	 <p> {{userX.groupProfile}}: {{userX.startDate}}  - {{userX.endDate}}
+ <div id="subscriber-list" ng-hide="!found">
+  	<h3>{{subscriberX.msisdn}}</h3>  
+  	 <p> {{subscriberX.groupProfile}}: {{subscriberX.startDate}}  - {{subscriberX.endDate}}
 </p>
-    	  <div class="remove" ng-click= "removeUserX(userX)">Remove</div>
+    	  <div class="remove" ng-click= "removeSubscriberX(subscriberX)">Remove</div>
   
   </div>
    </div>

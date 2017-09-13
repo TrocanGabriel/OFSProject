@@ -10,57 +10,76 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.*;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import org.gabi.postgresql.orangeproject.model.Customer;
-import org.gabi.postgresql.orangeproject.service.CustomerService;
+import org.gabi.postgresql.orangeproject.model.Subscriber;
+import org.gabi.postgresql.orangeproject.service.SubscriberService;
+import org.jboss.ejb3.annotation.SecurityDomain;
 
 import redis.clients.jedis.Jedis;
 
 @Path("/customers")
-public class CustomerResource {
+@SecurityDomain("keycloak")
+public class SubscriberResource {
 
-
-	CustomerService customerService = new CustomerService();
+    @EJB
+	SubscriberService subscriberService = new SubscriberService();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Customer> getCustomers() throws SQLException {
-        long a = System.currentTimeMillis();
-		List<Customer> customers =  customerService.getAllCustomers();
-        long b = System.currentTimeMillis();
-        System.out.println( "The process of receiving all subscribers from database took "+(b-a)+"milliseconds to execute." + "\n" + "("+((b-a)/1000)+" seconds)");
+    @RolesAllowed("user")
+	public List<Subscriber> getSubscribers(@Context HttpHeaders httpHeaders) throws SQLException {
+        List<Subscriber> customers =  subscriberService.getAllCustomers();
 		return customers;
 	}
 	
 	@GET
 	@Path("/addSubscribers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Customer> addCustomers() throws SQLException {
+	public List<Subscriber> addSubscribers() throws SQLException {
 		Connection c = null;
-		 c = customerService.connect(c);
-		 customerService.populateDB(c);
+		 c = subscriberService.connect(c);
+		 subscriberService.populateDB(c);
 			c.close();
-			return customerService.getAllCustomers();
+			return subscriberService.getAllCustomers();
 	}
 
+	@GET
+	@Path("/cache")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Subscriber> getCustomersCache() throws SQLException {
+		
+			return subscriberService.getSubscribersCache();
+	}
 
 	
 	@GET
 	@Path("{searchedMsisdn}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Customer getCustomer(@PathParam("searchedMsisdn") String searchedMsisdn) throws SQLException, ParseException{
-		Customer foundCustomer = null;
+	public Subscriber getSubscriber(@PathParam("searchedMsisdn") String searchedMsisdn) throws SQLException, ParseException{
+		Subscriber foundSubscriber = null;
 		
 		try{
-			foundCustomer = customerService.searchCustomerRedis(searchedMsisdn);
+			foundSubscriber = subscriberService.searchSubscriberRedis(searchedMsisdn);
 		
-	if(foundCustomer != null) {
+	if(foundSubscriber != null) {
 		System.out.println("info found in redis");
 	} else{
-	foundCustomer = customerService.searchCustomerBD(searchedMsisdn);
-		if(foundCustomer != null){
+	foundSubscriber = subscriberService.searchSubscriberBD(searchedMsisdn);
+		if(foundSubscriber != null){
 			
 			  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			  
@@ -83,20 +102,20 @@ public class CustomerResource {
 				
 				 }
 
-			  Map<String,String> customerDetails = new HashMap<String,String>();
-			  customerDetails.put("start_date", foundCustomer.getStartDate().toString());
-			  customerDetails.put("end_date", foundCustomer.getEndDate().toString());
-			  customerDetails.put("group_profile", foundCustomer.getGroupProfile());
-			  customerDetails.put("timestamp", LocalDateTime.now().format(formatter));
+			  Map<String,String> subscriberDetails = new HashMap<String,String>();
+			  subscriberDetails.put("start_date", foundSubscriber.getStartDate().toString());
+			  subscriberDetails.put("end_date", foundSubscriber.getEndDate().toString());
+			  subscriberDetails.put("group_profile", foundSubscriber.getGroupProfile());
+			  subscriberDetails.put("timestamp", LocalDateTime.now().format(formatter));
 			  
-			  jedis.hmset(searchedMsisdn, customerDetails); 
+			  jedis.hmset(searchedMsisdn, subscriberDetails); 
 		      System.out.println("redis new info added");
 		}
 	}
-	if(foundCustomer == null){
+	if(foundSubscriber == null){
 		System.out.println("ERROR: MSISDN not found in Redis or DB :" + searchedMsisdn);
 	}
-		return foundCustomer;
+		return foundSubscriber;
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -108,15 +127,15 @@ public class CustomerResource {
 	
 	@GET
 	@Path("/{msisdn}/switch")
-	public Customer searchCustomer(
+	public Subscriber searchSubscriber(
 			@QueryParam("location") int location,
 			@PathParam("msisdn") String msisdn) throws SQLException, ParseException{
-		Customer searchedCustomer = new Customer();
+		Subscriber searchedSubscriber = new Subscriber();
 		switch(location) {
 		case 1: 
-			if(customerService.searchCustomerBD(msisdn) != null){
+			if(subscriberService.searchSubscriberBD(msisdn) != null){
 				System.out.println("Customer with msisdn: "+ msisdn + "is in the database");
-				searchedCustomer = customerService.searchCustomerBD(msisdn);
+				searchedSubscriber = subscriberService.searchSubscriberBD(msisdn);
 			} else {
 				System.out.println("Customer with msisdn: "+ msisdn + "it is not in the database");
 			}
@@ -124,9 +143,9 @@ public class CustomerResource {
 			break;
 		
 		case 2: 
-			if(customerService.searchCustomerRedis(msisdn) != null){
+			if(subscriberService.searchSubscriberRedis(msisdn) != null){
 				System.out.println("Customer with msisdn: "+ msisdn + "is in Redis");
-				searchedCustomer = customerService.searchCustomerRedis(msisdn);
+				searchedSubscriber = subscriberService.searchSubscriberRedis(msisdn);
 			} else {
 				System.out.println("Customer with msisdn: "+ msisdn + "it is not in Redis");
 			}
@@ -137,7 +156,7 @@ public class CustomerResource {
 		
 		}
 		
-		return searchedCustomer;
+		return searchedSubscriber;
 	}
 	
 	
@@ -145,10 +164,10 @@ public class CustomerResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Customer addCustomer(Customer newCustomer) throws SQLException{
+	public Subscriber addCustomer(Subscriber newCustomer) throws SQLException{
 		Connection c = null;
-		 c = customerService.connect(c);
-		Customer addedCustomer =  customerService.insertInDB(newCustomer,c);
+		 c = subscriberService.connect(c);
+		Subscriber addedCustomer =  subscriberService.insertInDB(newCustomer,c);
 		c.close();
 		return addedCustomer;
 	}
@@ -157,17 +176,17 @@ public class CustomerResource {
 	@Path("/{msisdn}/{column}/{value}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Customer updateMessage(@PathParam("msisdn") String msisdn,
+	public Subscriber updateMessage(@PathParam("msisdn") String msisdn,
 			@PathParam("column") String column,
 			@PathParam("value") String value) throws SQLException{
 		
-		boolean update = customerService.updateDB(msisdn,column,value);
+		boolean update = subscriberService.updateDB(msisdn,column,value);
 		System.out.println(update + " " + msisdn);
 		if(update ==true) {
-		customerService.updateRedis(msisdn,column,value);
+		subscriberService.updateRedis(msisdn,column,value);
 		}
 		
-		return customerService.searchCustomerBD(msisdn);
+		return subscriberService.searchSubscriberBD(msisdn);
 			
 	}
 	
@@ -175,7 +194,7 @@ public class CustomerResource {
 	@Path("/delete/{msisdn}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteUser(@PathParam("msisdn") String msisdn){
-		int result = customerService.deleteUser(msisdn);
+		int result = subscriberService.deleteSubscriber(msisdn);
 		
 			if (result == 1){
 			System.out.println("Delete successful");
@@ -188,7 +207,7 @@ public class CustomerResource {
 	@Path("/deleteAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteUsers(){
-		int result = customerService.deleteUsers();
+		int result = subscriberService.deleteSubscribers();
 		
 			if (result == 1){
 			System.out.println("Delete successful");
@@ -196,5 +215,17 @@ public class CustomerResource {
 		}
 			return "<result>failed</result>";
 	}
+
 	
+	@DELETE
+	@Path("/deleteCache")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteCache(){
+		boolean result = subscriberService.deleteCache();
+		
+			if (result == true){
+			return "<result>success</result>";
+		}
+			return "<result>failed</result>";
+	}
 }
